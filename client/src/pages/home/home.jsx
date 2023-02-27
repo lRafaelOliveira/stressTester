@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { getSystemInfo } from '../../hooks/getSysteminfo';
+import axios from 'axios';
 import './index.css'
+
+const fetchSession = async () => {
+    axios.get('http://localhost:3000')
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 
 function Home() {
     const [showSpinner, setShowSpinner] = useState(true);
@@ -12,9 +22,9 @@ function Home() {
         setTimeout(() => {
             setShowSpinner(false);
         }, 1000);
+
         // pegando o valor do de uso da cps
-        let data = getSystemInfo()
-        console.log(data)
+        fetchSession();
     }, []);
     const iniciarRequests = () => {
         setShowSpinner(true);
