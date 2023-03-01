@@ -2,20 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css'
 
-const fetchSession = async () => {
-    axios.get('http://localhost:3000')
-        .then(response => {
-            console.log(response)
-        })
-        .catch(error => {
-            console.log(error);
-        });
-};
-
 function Home() {
     const [showSpinner, setShowSpinner] = useState(true);
     const [cpuUsage, setCpuUsage] = useState(0);
     const [memoryUsage, setMemoryUsage] = useState(0);
+    const [discoUsage, setDiscoUsage] = useState(0);
+    const [inputValue, setInputValue] = useState('');
+    const [countRequests, setcountRequests] = useState(1);
+    const [lastRequests, setlastRequests] = useState([]);
 
     useEffect(() => {
         // zerando o loading
@@ -24,14 +18,62 @@ function Home() {
         }, 1000);
 
         // pegando o valor do de uso da cps
-        fetchSession();
+        setInterval(() => {
+            atualizaInfos();
+        }, 5000)
+        getLastRequests();
     }, []);
-    const iniciarRequests = () => {
+
+    const atualizaInfos = async () => {
+        axios.get('http://localhost:3000/getInfos')
+            .then(response => {
+                if (response.data.code == 200) {
+                    let data = response.data.data
+                    setCpuUsage(((data.cpuUsagePercent)).toFixed(2))
+                    setMemoryUsage((data.memoryUsagePercent).toFixed(2))
+                    setDiscoUsage((data.usedPercent).toFixed(2))
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    function handleInputChange(event) {
+        setInputValue(event.target.value);
+    }
+    function handleCountRequests(event) {
+        setcountRequests(event.target.value);
+    }
+    const iniciarRequests = async () => {
         setShowSpinner(true);
-        console.log('OKOK')
-        setTimeout(() => {
-            setShowSpinner(false);
-        }, 10000);
+        let links = inputValue.split(';')
+        axios.get(`http://localhost:3000/stress?countRequests=${countRequests}&links=${links}`)
+            .then(response => {
+                if (response?.data?.code == 200) {
+                    console.log(response.data)
+                }
+                setShowSpinner(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setShowSpinner(false);
+            });
+    }
+
+    const getLastRequests = async () => {
+        axios.get(`http://localhost:3000/getRequests`)
+            .then(response => {
+                if (response?.data?.code == 200) {
+                    setlastRequests(response.data.data)
+                    console.log(response.data.data)
+                }
+                setShowSpinner(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setShowSpinner(false);
+            });
     }
     return (
         <div className="container-fluid position-relative d-flex p-0">
@@ -46,8 +88,9 @@ function Home() {
 
             <div className="sidebar pe-4 pb-3">
                 <nav className="navbar bg-secondary navbar-dark">
-                    <a href="index.html" className="navbar-brand mx-4 mb-3">
-                        <h3 className="text-primary"><i className="fa fa-user-edit me-2"></i>UFG</h3>
+                    <a href="/" className="navbar-brand mx-4 mb-3">
+                        {/* <h3 className="text-primary"><i className="fa fa-user-edit me-2"></i>UFG</h3> */}
+                        <img src="./ufg_logo.png" alt='logo' style={{ width: 150 + "px" }} />
                     </a>
                     <div className="navbar-nav w-100">
                         <a href="/" className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</a>
@@ -56,7 +99,6 @@ function Home() {
                 </nav>
             </div>
             <div className="content">
-
                 <div className="container-fluid pt-4 px-4">
                     <div className="row g-4">
                         <div className="col-sm-6 col-xl-3">
@@ -73,7 +115,7 @@ function Home() {
                                 <i className="fa fa-chart-bar fa-3x text-primary"></i>
                                 <div className="ms-3">
                                     <p className="mb-2">RAM</p>
-                                    <h6 className="mb-0">12%</h6>
+                                    <h6 className="mb-0">{memoryUsage}%</h6>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +124,7 @@ function Home() {
                                 <i className="fa fa-chart-area fa-3x text-primary"></i>
                                 <div className="ms-3">
                                     <p className="mb-2">Disco</p>
-                                    <h6 className="mb-0">34</h6>
+                                    <h6 className="mb-0">{discoUsage}%</h6>
                                 </div>
                             </div>
                         </div>
@@ -99,9 +141,11 @@ function Home() {
                 </div>
                 <div className="container-fluid pt-4 px-4">
                     <div className="bg-secondary rounded p-4">
-                        <div className="col-sm-12 col-xl-3" style={{ width: 60 + 'vw' }}>
-                            <label>Insira o link:</label>
-                            <textarea style={{ width: 60 + 'vw', background: '#ccc' }} rows={5}></textarea>
+                        <div className="col-sm-12 col-xl-3" style={{ width: 100 + '%', textAlign: 'center' }}>
+                            <label>Insira o link:</label><br />
+                            <textarea style={{ width: 80 + '%', background: '#ccc' }} rows={5} value={inputValue} onChange={handleInputChange}></textarea>
+                            <label>Quantidade de Requests:</label><br />
+                            <input value={countRequests} onChange={handleCountRequests} style={{ width: 80 + '%', background: '#ccc' }} /><br /><br />
                             <button className='btn-init-requests' onClick={iniciarRequests}>Iniciar</button>
                         </div>
                     </div>
@@ -121,19 +165,24 @@ function Home() {
                                         <th scope="col">Requests</th>
                                         <th scope="col">Sucessos</th>
                                         <th scope="col">Falhas</th>
+                                        <th scope="col">Duração</th>
                                         <th scope="col">#</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><input className="form-check-input" type="checkbox" /></td>
-                                        <td>26 Fev 2023</td>
-                                        <td>google.com</td>
-                                        <td>50</td>
-                                        <td>50</td>
-                                        <td>0</td>
-                                        <td><a className="btn btn-sm btn-primary" href="/">Ver</a></td>
-                                    </tr>
+                                    { lastRequests &&  lastRequests.map(x => (
+                                        <tr key={x.nome}>
+                                            <td></td>
+                                            <td>{x.nome}</td>
+                                            <td>{x.conteudo[0].url}</td>
+                                            <td>{x.conteudo[0].requests}</td>
+                                            <td>{x.conteudo[0].successCount}</td>
+                                            <td>{x.conteudo[0].errorCount}</td>
+                                            <td>{x.conteudo[0].avgDuration.toFixed(0)} s</td>
+                                            <td><a className="btn btn-sm btn-primary" href="/">Ver</a></td>
+                                        </tr>
+                                    ))}
+
                                 </tbody>
                             </table>
                         </div>

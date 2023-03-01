@@ -1,5 +1,6 @@
 import os from 'os';
 import process from 'process';
+import si from 'systeminformation';
 
 export function getSystemInfo() {
     const hostname = os.hostname();
@@ -12,15 +13,15 @@ export function getSystemInfo() {
     const uptime = process.uptime();
     const cpuUsagePercent = ((cpuUsage.user + cpuUsage.system) / (1000 * 1000 * uptime)) * 100;
     const memoryUsagePercent = ((totalMemory - freeMemory) / totalMemory) * 100;
-
-
-    console.log(`Hostname: ${hostname}`);
-    console.log(`Platform: ${platform}`);
-    console.log(`Architecture: ${arch}`);
-    console.log(`Number of CPUs: ${cpus.length}`);
-    console.log(`Total memory: ${totalMemory} bytes`);
-    console.log(`Free memory: ${freeMemory} bytes`);
-    return { hostname, platform, arch, cpus: cpus.length, totalMemory, freeMemory, cpuUsagePercent, memoryUsagePercent }
+    // Calcule a porcentagem de uso de disco
+    const usedPercent = Math.round((1 - freeMemory / totalMemory) * 100);
+    si.networkStats().then((data) => {
+        // Itere sobre as interfaces de rede
+        data.forEach(({ iface, rx_bytes, tx_bytes }) => {
+            // Obtenha o uso de rede da interface
+        });
+    });
+    return { hostname, platform, arch, cpus: cpus.length, totalMemory, freeMemory, cpuUsagePercent, memoryUsagePercent, usedPercent }
 }
 
 
