@@ -34,6 +34,7 @@ export var info = {
     hora: new Date().getHours(),
     minutos: new Date().getMinutes(),
     segundos: new Date().getSeconds(),
+    timestamp: new Date().getTime(),
     update: function () {
         info.data = new Date();
         info.dia = info.data.getDate();
@@ -44,5 +45,6 @@ export var info = {
         info.hora = info.data.getHours();
         info.minutos = info.data.getMinutes();
         info.segundos = info.data.getSeconds();
+        info.timestamp = info.data.getTime();
     },
 };
