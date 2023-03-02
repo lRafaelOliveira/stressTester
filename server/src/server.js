@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { getSystemInfo } from './hooks/getinfo.js';
-import { stressTest } from './hooks/stress.js';
+import { stressTester } from './hooks/stress.js';
+import { stressTest } from './hooks/stressTest.js';
 import { listarArquivosPorDataDeCriacao } from './hooks/listRequests.js';
 
 const app = express();
@@ -23,7 +24,7 @@ app.get('/stress', async (req, res) => {
     let links = req?.query?.links
     let countRequests = req?.query?.countRequests ?? 1
     if (!links) {
-        res.json({ code: 404, message: "Sucesso" });
+        res.json({ code: 404, error: true, message: "Voce Precisa Informar um Link" });
         return
     }
     links = links.split(';')

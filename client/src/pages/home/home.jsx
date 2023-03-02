@@ -143,9 +143,9 @@ function Home() {
                     <div className="bg-secondary rounded p-4">
                         <div className="col-sm-12 col-xl-3" style={{ width: 100 + '%', textAlign: 'center' }}>
                             <label>Insira o link:</label><br />
-                            <textarea style={{ width: 80 + '%', background: '#ccc' }} rows={5} value={inputValue} onChange={handleInputChange}></textarea>
+                            <textarea style={{ width: 80 + '%', background: '#ccc' }} rows={5} value={inputValue} onChange={handleInputChange}></textarea><br />
                             <label>Quantidade de Requests:</label><br />
-                            <input value={countRequests} onChange={handleCountRequests} style={{ width: 80 + '%', background: '#ccc' }} /><br /><br />
+                            <input value={countRequests} onChange={handleCountRequests} style={{ width: 10 + '%', background: '#ccc' }} /><br /><br />
                             <button className='btn-init-requests' onClick={iniciarRequests}>Iniciar</button>
                         </div>
                     </div>
@@ -170,7 +170,7 @@ function Home() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { lastRequests &&  lastRequests.map(x => (
+                                    {lastRequests && lastRequests.map(x => (
                                         <tr key={x.nome}>
                                             <td></td>
                                             <td>{x.nome}</td>

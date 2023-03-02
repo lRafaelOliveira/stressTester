@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path"
 import { info } from "../config/infoDates.js";
 
-export async function stressTest(requests, urls) {
+export async function stressTester(requests, urls) {
   const results = []; // array para armazenar os resultados das requisições
 
   console.log(`Iniciando teste de estresse em ${urls.length} URLs.`);
@@ -23,7 +23,7 @@ export async function stressTest(requests, urls) {
         const end = Date.now();
         const cpuEnd = process.cpuUsage(cpuStart);
         const memEnd = process.memoryUsage();
-        const duration = (end - start)/1000;
+        const duration = (end - start) / 1000;
         return {
           url: url,
           duration: duration,
