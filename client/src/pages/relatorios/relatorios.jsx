@@ -8,15 +8,19 @@ function Relatorios() {
     const [Relatorio, setRelatorio] = useState([]);
     const [cpuUsage, setCpuUsage] = useState(0);
     const [memoryUsage, setMemoryUsage] = useState(0);
+    const [discoUsage, setDiscoUsage] = useState(0);
+    const [cpuNucleos, setcpuNucleos] = useState(0);
+    const [maxMemoria, setmaxMemoria] = useState(0);
     const [sortedMetrics, setsortedMetrics] = useState([]);
     const [TempoMedioResposta, setTempoMedioResposta] = useState(0);
     const [sucessRequests, setsucessRequests] = useState(0);
     const [errorRequests, seterrorRequests] = useState(0);
     const [maxResponseTime, setmaxResponseTime] = useState(0);
     const [minResponseTime, setminResponseTime] = useState(0);
+    const [maxUsoMemoria, setmaxUsoMemoria] = useState(0);
+    const [minUsoMemoria, setminUsoMemoria] = useState(0);
     const [percSucess, setpercSucess] = useState(0)
     useEffect(() => {
-        console.log('iniciando')
         atualizaInfos()
         setTimeout(() => {
             setShowSpinner(false);
@@ -37,6 +41,9 @@ function Relatorios() {
                     let data = response.data.data
                     setCpuUsage(((data.cpuUsagePercent)).toFixed(2))
                     setMemoryUsage((data.memoryUsagePercent).toFixed(2))
+                    setDiscoUsage((data.usedPercent).toFixed(2))
+                    setcpuNucleos((data.cpus))
+                    setmaxMemoria(((data.totalMemory)/1000000000))
                 }
             })
             .catch(error => {
@@ -58,20 +65,27 @@ function Relatorios() {
         const minResponseTime = sortedMetrics.reduce((min, metric) => {
             return metric.responseTime < min ? metric.responseTime : min;
         }, Number.MAX_VALUE);
+        const maxUsoMemoria = sortedMetrics.reduce((max, metric) => {
+            return metric.ramUsage > max ? metric.ramUsage : max;
+        }, 0);
+        const minUsoMemoria = sortedMetrics.reduce((min, metric) => {
+            return metric.ramUsage < min ? metric.ramUsage : min;
+        }, Number.MAX_VALUE);
         setsortedMetrics(sortedMetrics)
         setTempoMedioResposta(averageTime)
-        setmaxResponseTime(maxResponseTime)
+        setmaxResponseTime((maxResponseTime))
         setminResponseTime(minResponseTime)
+        setmaxUsoMemoria((maxUsoMemoria / 1000000000))
+        setminUsoMemoria((minUsoMemoria / 1000000000))
         setsucessRequests(data?.conteudo?.sucessRequests)
         seterrorRequests(data?.conteudo?.errorRequests)
         setpercSucess((data?.conteudo?.sucessRequests / sortedMetrics.length) * 100)
 
-        console.log(data)
         var options = {
             chart: {
                 id: 'grafico-de-linha'
             },
-            height:120,
+            height: 120,
             markers: {
                 size: 2,
             },
@@ -85,8 +99,8 @@ function Relatorios() {
                 }
             ]
         };
-        var chart = new ApexCharts(document.querySelector('#chart1'), options)
-        chart.render()
+        //var chart = new ApexCharts(document.querySelector('#chart1'), options)
+        //chart.render()
     }
 
     const getLastRequests = async (nome = "") => {
@@ -147,6 +161,28 @@ function Relatorios() {
                                 </div>
                             </div>
                         </div>
+                        <div className="col-sm-6 col-xl-3">
+                            <div className="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                <i className="fa fa-chart-area fa-3x text-primary"></i>
+                                <div className="ms-3">
+                                    <p className="mb-2">Disco</p>
+                                    <h6 className="mb-0">{discoUsage}%</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-sm-6 col-xl-3">
+                            <div className="bg-secondary rounded d-flex align-items-center justify-content-between p-4 text-center">
+                                <i className="fa fa-chart-pie fa-3x text-primary"></i>
+                                <div className="ms-3">
+                                    <p className="mb-2">CPU Nucleos</p>
+                                    <h6 className="mb-0">{cpuNucleos}</h6>
+                                </div>
+                                <div className="ms-3">
+                                    <p className="mb-2">Max Memoria Ram</p>
+                                    <h6 className="mb-0">{maxMemoria.toFixed(2)} Gb</h6>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="container-fluid pt-4 px-4">
@@ -155,7 +191,7 @@ function Relatorios() {
                     </div>
                 </div>
                 <div className="container-fluid pt-4 px-4">
-                    <div className="row g-4">
+                    <div className="row g-4 text-center">
                         <div className="col-sm-6 col-xl-3">
                             <div className="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                                 <i className="fa fa-chart-line fa-3x text-primary"></i>
@@ -210,6 +246,24 @@ function Relatorios() {
                                 </div>
                             </div>
                         </div>
+                        <div className="col-sm-6 col-xl-3">
+                            <div className="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                <i className="fa fa-chart-bar fa-3x text-primary"></i>
+                                <div className="ms-3">
+                                    <p className="mb-2">Maior Uso Memoria</p>
+                                    <h6 className="mb-0">{maxUsoMemoria.toFixed(2)} gb</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-sm-6 col-xl-3">
+                            <div className="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                <i className="fa fa-chart-bar fa-3x text-primary"></i>
+                                <div className="ms-3">
+                                    <p className="mb-2">Menor Uso Memoria</p>
+                                    <h6 className="mb-0">{minUsoMemoria.toFixed(2)} gb</h6>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="container-fluid pt-4 px-4">
@@ -224,14 +278,18 @@ function Relatorios() {
                                         <th scope="col">Indice</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Tempo</th>
+                                        <th scope="col">Memória</th>
+                                        <th scope="col">Cpu</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {sortedMetrics && sortedMetrics.map(x => (
-                                        <tr key={x.indice}>
-                                            <td>{x.indice}</td>
-                                            <td>{x.status}</td>
-                                            <td>{x.responseTime.toFixed(2) + ' s'}</td>
+                                        <tr key={x?.indice}>
+                                            <td>{x?.indice}</td>
+                                            <td>{x?.status}</td>
+                                            <td>{x?.responseTime?.toFixed(2) + ' s'}</td>
+                                            <td>{(x?.ramUsage / 1000000000)?.toFixed(2) + ' gb'}</td>
+                                            <td>{x?.cpuUsage?.toFixed(2)}</td>
                                         </tr>
                                     ))}
                                 </tbody>

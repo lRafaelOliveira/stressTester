@@ -32,7 +32,7 @@ const runTest = async (endpoint, numberOfRequests) => {
     let timeInit = performance.now();
     const endTime = startTime + durationInSeconds * 1000;
     const requests = [];
-    let suceessRequests = 0;
+    let sucessRequests = 0;
     let errorRequests = 0;
     for (let i = 0; i < numberOfRequests; i++) {
         requests.push(sendRequest(i));
@@ -45,7 +45,7 @@ const runTest = async (endpoint, numberOfRequests) => {
         mem: 'total',
     }); // coleta informações do sistema para adicionar ao resultado
     const id = generatePayload();
-   
+
     const result = {
         id: id.id,
         endpoint,
@@ -53,7 +53,7 @@ const runTest = async (endpoint, numberOfRequests) => {
         durationInSeconds,
         metrics,
         errorRequests,
-        suceessRequests,
+        sucessRequests,
         responseTime: (timeFinish - timeInit) / 1000,
         systemInfo: {
             cpu: systemInfo.cpu,
@@ -74,21 +74,29 @@ const runTest = async (endpoint, numberOfRequests) => {
             const response = await axios.get(endpoint);
             const requestEndTime = performance.now();
             const responseTime = (requestEndTime - requestStartTime) / 1000;
-            suceessRequests++
+            const load = await si.currentLoad();
+            const mem = await si.mem();
+            sucessRequests++
             metrics.push({
                 indice: n,
                 status: response.status,
                 responseTime,
+                cpuLoad: load.currentload,
+                ramUsage: mem.used
             });
         } catch (error) {
             const id = generatePayload();
             const requestEndTime = performance.now();
             const responseTime = (requestEndTime - requestStartTime) / 1000;
+            const load = await si.currentLoad();
+            const mem = await si.mem();
             errorRequests++
             metrics.push({
                 indice: n,
                 status: error.response ? error.response.status : 'Error',
                 responseTime,
+                cpuLoad: load.currentload,
+                ramUsage: mem.used
             });
             if (performance.now() < endTime) {
                 parando = true
