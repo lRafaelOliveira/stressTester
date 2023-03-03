@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ApexCharts from 'apexcharts'
+import ApexCharts from 'apexcharts';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './index.css'
 
@@ -19,7 +20,8 @@ function Relatorios() {
     const [minResponseTime, setminResponseTime] = useState(0);
     const [maxUsoMemoria, setmaxUsoMemoria] = useState(0);
     const [minUsoMemoria, setminUsoMemoria] = useState(0);
-    const [percSucess, setpercSucess] = useState(0)
+    const [percSucess, setpercSucess] = useState(0);
+    const navigateTo = useNavigate();
     useEffect(() => {
         atualizaInfos()
         setTimeout(() => {
@@ -28,7 +30,8 @@ function Relatorios() {
         const searchParams = new URLSearchParams(window.location.search);
         const nomeDoRelatorio = searchParams.get('p');
         if (!nomeDoRelatorio || nomeDoRelatorio == null || nomeDoRelatorio == undefined) {
-            console.log('NENHUM RELATORIO SELECIONADO')
+            navigateTo('/');
+            return;
         } else {
             getLastRequests(nomeDoRelatorio)
         }
@@ -43,7 +46,7 @@ function Relatorios() {
                     setMemoryUsage((data.memoryUsagePercent).toFixed(2))
                     setDiscoUsage((data.usedPercent).toFixed(2))
                     setcpuNucleos((data.cpus))
-                    setmaxMemoria(((data.totalMemory)/1000000000))
+                    setmaxMemoria(((data.totalMemory) / 1000000000))
                 }
             })
             .catch(error => {
