@@ -52,16 +52,21 @@ function Home() {
     const iniciarRequests = async () => {
         setShowSpinner(true);
         let links = inputValue.split(';')
+        console.log(links.length)
         axios.get(`http://localhost:3000/stress?countRequests=${countRequests}&links=${links}`)
             .then(response => {
                 if (response?.data?.code == 200) {
                 }
                 setShowSpinner(false);
                 getLastRequests()
+                setInputValue('')
+                setcountRequests(1)
             })
             .catch(error => {
                 console.log(error);
                 setShowSpinner(false);
+                setInputValue('')
+                setcountRequests(1)
             });
     }
 

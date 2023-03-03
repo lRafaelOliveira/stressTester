@@ -6,6 +6,7 @@ import { performance } from 'perf_hooks';
 import { v4 as uuidv4 } from 'uuid';
 import os from 'os';
 import si from 'systeminformation';
+import { URL } from 'url';
 
 const directory = './src/storage';
 //const filename = `${info.dia}-${info.mes}-${info.ano}-${info.hora}h-${info.minutos}m-${info.segundos}s.json`;
@@ -115,11 +116,26 @@ const saveResults = (pathArch, results) => {
         }
     });
 };
+function validarUrlAxios(url) {
+    try {
+        const urlObj = new URL(url);
+        if (!urlObj.protocol || !urlObj.hostname) {
+            return false;
+        }
+        return true;
+    } catch (err) {
+        console.log('URL INVALIDA')
+        return false;
+    }
+}
 export async function stressTest(requests, urls) {
-    console.log(`Iniciando ${requests}`)
     const promises = [];
     urls.forEach(async (i) => {
-        promises.push(runTest(i, requests));
+        if (validarUrlAxios(i)) {
+            promises.push(runTest(i, requests));
+        } else {
+
+        }
     })
     let dados = await Promise.all(promises);
     return { "code": 200, "message": "Requisições iniciadas", dados }

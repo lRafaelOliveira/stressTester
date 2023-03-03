@@ -30,8 +30,12 @@ app.get('/stress', async (req, res) => {
         return
     }
     links = links.split(';')
-    let data = await stressTest(countRequests, links)
-    res.json({ code: 200, message: "Sucesso", data });
+    try {
+        let data = await stressTest(countRequests, links)
+        res.json({ code: 200, message: "Sucesso", data });
+    } catch (err) {
+        res.json({ code: 404, message: "Erro Desconhecido" });
+    }
 });
 
 app.get('/getRequests', async (req, res) => {
