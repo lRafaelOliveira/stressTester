@@ -71,6 +71,7 @@ function Relatorios() {
             chart: {
                 id: 'grafico-de-linha'
             },
+            height:120,
             markers: {
                 size: 2,
             },
@@ -150,7 +151,7 @@ function Relatorios() {
                 </div>
                 <div className="container-fluid pt-4 px-4">
                     <div className="bg-secondary text-center rounded p-4">
-                        <div id="chart1" style={{ width: 100 + "%" }}></div>
+                        <div id="chart1"></div>
                     </div>
                 </div>
                 <div className="container-fluid pt-4 px-4">
