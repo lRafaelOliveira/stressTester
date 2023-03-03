@@ -12834,3 +12834,7 @@ fieldset:disabled .btn {
   background: var(--dark);
   border-color: var(--primary);
 }
+#chart1 {
+  max-width: 100%;
+  display:flex;
+}

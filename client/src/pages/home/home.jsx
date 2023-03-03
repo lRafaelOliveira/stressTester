@@ -54,6 +54,7 @@ function Home() {
                     console.log(response.data)
                 }
                 setShowSpinner(false);
+                getLastRequests()
             })
             .catch(error => {
                 console.log(error);
@@ -94,7 +95,7 @@ function Home() {
                     </a>
                     <div className="navbar-nav w-100">
                         <a href="/" className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <a href="/relatorios" className="nav-item nav-link"><i className="fa fa-th me-2"></i>Elementos</a>
+                        <a href="/relatorios" className="nav-item nav-link"><i className="fa fa-th me-2"></i>Relatorio</a>
                     </div>
                 </nav>
             </div>
@@ -170,16 +171,16 @@ function Home() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {lastRequests && lastRequests.map(x => (
+                                    {lastRequests.map(x => (
                                         <tr key={x.nome}>
                                             <td></td>
                                             <td>{x.nome}</td>
-                                            <td>{x.conteudo[0].url}</td>
-                                            <td>{x.conteudo[0].requests}</td>
-                                            <td>{x.conteudo[0].successCount}</td>
-                                            <td>{x.conteudo[0].errorCount}</td>
-                                            <td>{x.conteudo[0].avgDuration.toFixed(0)} s</td>
-                                            <td><a className="btn btn-sm btn-primary" href="/">Ver</a></td>
+                                            <td>{x.conteudo.endpoint}</td>
+                                            <td>{x.conteudo.numberOfRequests}</td>
+                                            <td>{x.conteudo.sucessRequests}</td>
+                                            <td>{x.conteudo.errorRequests}</td>
+                                            <td>{x.conteudo.responseTime.toFixed(2)} s</td>
+                                            <td><a className="btn btn-sm btn-primary" href={"/relatorios?p="+x.nome}>Ver</a></td>
                                         </tr>
                                     ))}
 

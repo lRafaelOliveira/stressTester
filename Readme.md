@@ -21,6 +21,32 @@ Antes de começar, certifique-se de ter o Node.js instalado em sua máquina. Cas
 3. Configure o endpoint do servidor no arquivo `.env`.
 4. Execute o cliente: `npm start`.
 
+
+## Instruções de Uso
+
+<div align="center">
+ <img src="./assets/img1.png" />
+</div>
+
+Na tela Inicial Voce encontra as informações do Sistema (Host), alem de uma area para realizar os testes, podendo digitar 1 url, ou varias urls separadas por ; (ponto e virgula). Para Cada url Digitada sera gerado um novo relatorio.
+
+<div align="center">
+ <img src="./assets/img2.png" />
+</div>
+
+Os Relatorios São listados logo abaixo com um Resumo de cada um. Para Ver detalhadamente o Relatorio basta clicar em Ver. 
+
+
+<div align="center">
+ <img src="./assets/img3.png" />
+</div>
+
+Aqui é a Tela do Relatorio. As informações Acima São as Basícas do Sistema no momento das requisições.
+A segunda area de informações é m grafico que mostra o tempo de cada requisição. 
+
+Abaixa é possivel ver as infomações sobre tempo médio, Sucessos, Erros, Tempo maximo, tempo minimo etc... 
+Por Ultimo voce tem a listagem de cada requisição individual
+
 ## Licença
 
 Este projeto de Código aberto.
