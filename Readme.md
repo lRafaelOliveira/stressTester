@@ -2,9 +2,47 @@
 
 Este é um projeto básico para uma aplicação Node.js com um servidor e cliente para ser usado como ferramente de teste de estresse em servidores web. 
 
-## Instalação
+
+# INTALAÇÃO NO UBUNTU
+
+Vamos Atualizar o Sistema: 
+```
+sudo apt update -y
+sudo apt upgrade -y
+```
+
+1-> Instalar o Git 
+```
+sudo apt install git-all
+```
+2-> Instalar o Node
+``` 
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+
+sudo apt-get install -y nodejs
+
+sudo apt install nodejs
+```
+### Instalação do servidor
+
+1. Clone o repositório em sua máquina: `git clone https://github.com/lRafaelOliveira/my-vue-app.git`.
+2. Navegue até a pasta do servidor: `cd stressTester/server`.
+3. Instale as dependências: `npm install`.
+4. Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente necessárias.
+5. Execute o servidor: `npm start`.
+
+### Instalação do cliente
+
+1. Navegue até a pasta do cliente: `cd my-vue-app/client`.
+2. Instale as dependências: `npm install`.
+3. Configure o endpoint do servidor no arquivo `.env`.
+4. Execute o cliente: `npm start`.
+
+
+# INTALAÇÃO NO WINDOWS
 
 Antes de começar, certifique-se de ter o Node.js instalado em sua máquina. Caso não tenha, você pode fazer o download da versão mais recente em [nodejs.org](https://nodejs.org).
+Basta clicar para executar e next next... 
 
 ### Instalação do servidor
 
@@ -22,7 +60,9 @@ Antes de começar, certifique-se de ter o Node.js instalado em sua máquina. Cas
 4. Execute o cliente: `npm start`.
 
 
-## Instruções de Uso
+
+
+# Instruções de Uso
 
 <div align="center">
  <img src="./assets/img1.png" />
