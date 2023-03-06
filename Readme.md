@@ -1,9 +1,9 @@
 # Aplicação Node.js StressTester 
 
-Este é um projeto básico para uma aplicação Node.js com um servidor e cliente para ser usado como ferramente de teste de estresse em servidores web. 
+Este é um projeto básico para uma aplicação Node.js com um servidor e cliente para ser usado como ferramenta de teste de estresse em servidores web. 
 
 
-# INTALAÇÃO NO UBUNTU
+# INSTALAÇÃO NO UBUNTU
 
 Vamos Atualizar o Sistema: 
 ```
@@ -25,7 +25,7 @@ sudo apt install nodejs
 ```
 ### Instalação do servidor
 
-1. Clone o repositório em sua máquina: `git clone https://github.com/lRafaelOliveira/my-vue-app.git`.
+1. Clone o repositório em sua máquina: `git clone https://github.com/lRafaelOliveira/stressTester.git`.
 2. Navegue até a pasta do servidor: `cd stressTester/server`.
 3. Instale as dependências: `npm install`.
 4. Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente necessárias.
@@ -33,28 +33,28 @@ sudo apt install nodejs
 
 ### Instalação do cliente
 
-1. Navegue até a pasta do cliente: `cd my-vue-app/client`.
+1. Navegue até a pasta do cliente: `cd stressTester/client`.
 2. Instale as dependências: `npm install`.
 3. Configure o endpoint do servidor no arquivo `.env`.
 4. Execute o cliente: `npm start`.
 
 
-# INTALAÇÃO NO WINDOWS
+# INSTALAÇÃO NO WINDOWS
 
 Antes de começar, certifique-se de ter o Node.js instalado em sua máquina. Caso não tenha, você pode fazer o download da versão mais recente em [nodejs.org](https://nodejs.org).
 Basta clicar para executar e next next... 
 
 ### Instalação do servidor
 
-1. Clone o repositório em sua máquina: `git clone https://github.com/lRafaelOliveira/my-vue-app.git`.
-2. Navegue até a pasta do servidor: `cd my-vue-app/server`.
+1. Clone o repositório em sua máquina: `git clone https://github.com/lRafaelOliveira/stressTester.git`.
+2. Navegue até a pasta do servidor: `cd stressTester/server`.
 3. Instale as dependências: `npm install`.
 4. Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente necessárias.
 5. Execute o servidor: `npm start`.
 
 ### Instalação do cliente
 
-1. Navegue até a pasta do cliente: `cd my-vue-app/client`.
+1. Navegue até a pasta do cliente: `cd stressTester/client`.
 2. Instale as dependências: `npm install`.
 3. Configure o endpoint do servidor no arquivo `.env`.
 4. Execute o cliente: `npm start`.
